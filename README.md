@@ -130,15 +130,14 @@ You're welcome to make UX improvements or add minor enhancements, as long as the
     -handled the deletion in vendorList by triggering the deletion and refreshing the list again.
     -binded the delete action with button.
 
-    b- **Fix the UI bug**
-    -Prevented rapid clicks by disabling the "Add vendor" button while the request is in progress.
-    -in vendorStore.ts , defined loading property as false making it true once we get the value.
+   b- **Fix the UI bug**
+-Prevented rapid clicks by disabling the "Add vendor" button while the request is in progress.
+-in vendorStore.ts , defined loading property as false making it true once we get the value.
 
-    c- **Unique Emails**
-    -Added UNIQUE constraint in data.sql in ALTER TABLE query
-    -ceking if the email already exists from vendor repo
-    -handling exception properly by creating seperate file and checking in UI component if error is 409, already exits then throwing a messaged in UI.
-
+c- **Unique Emails**
+-Added UNIQUE constraint in data.sql in ALTER TABLE query
+-ceking if the email already exists from vendor repo
+-handling exception properly by creating seperate file and checking in UI component if error is 409, already exits then throwing a messaged in UI.
 3-Assumptions & Trade-offs or challenges encountered during development.
 - Assumed backend returns plain text error messages (e.g. "Email already exists") instead of structured JSON.
 - Chose to keep error handling simple and readable rather than introducing a global error handler.

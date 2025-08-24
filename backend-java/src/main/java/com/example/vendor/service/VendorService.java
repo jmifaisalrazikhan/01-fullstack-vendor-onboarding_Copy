@@ -1,4 +1,5 @@
 package com.example.vendor.service;
+import com.example.vendor.exception.DuplicateEmailException;
 
 import com.example.vendor.model.Vendor;
 import com.example.vendor.repository.VendorRepository;
@@ -22,6 +23,9 @@ public class VendorService {
     }
 
     public Vendor createVendor(Vendor vendor) {
+        if (vendorRepository.existsByEmail(vendor.getEmail())) {
+            throw new DuplicateEmailException("Email already exists");
+        }
         return vendorRepository.save(vendor);
     }
 }

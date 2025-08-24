@@ -1,3 +1,6 @@
+-- Enforce email uniqueness
+ALTER TABLE vendors ADD CONSTRAINT unique_email UNIQUE (email);
+
 -- Insert sample vendors
 INSERT INTO vendors (name, contact_person, email, partner_type) VALUES 
 ('Acme Corp', 'John Doe', 'john@acmecorp.com', 'Supplier'),

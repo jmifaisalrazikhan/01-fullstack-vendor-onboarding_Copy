@@ -7,4 +7,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VendorRepository extends JpaRepository<Vendor, Long> {
     // Spring Data JPA will automatically implement basic CRUD operations
+    boolean existsByEmail(String email);
 }

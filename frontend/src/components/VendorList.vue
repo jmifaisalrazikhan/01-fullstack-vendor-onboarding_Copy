@@ -2,7 +2,9 @@
   <div class="vendor-list">
     <h2>Vendor List</h2>
     <div v-if="vendorStore.loading">Loading vendors...</div>
-    <div v-else-if="vendorStore.error" class="error">{{ vendorStore.error }}</div>
+    <div v-if="vendorStore.vendorListError" class="error">
+  {{ vendorStore.vendorListError }}
+</div>
     <div v-else-if="vendorStore.vendors.length === 0" class="no-vendors">No vendors found. Add your first vendor!</div>
     <table v-else class="vendors-table">
       <thead>
@@ -21,6 +23,9 @@
           <td>{{ vendor.contact_person }}</td>
           <td>{{ vendor.email }}</td>
           <td>{{ vendor.partner_type }}</td>
+          <td>
+          <button @click="confirmDelete(vendor.id)">Delete</button>
+        </td>
         </tr>
       </tbody>
     </table>
@@ -30,13 +35,25 @@
 <script setup lang="ts">
 import { onMounted } from 'vue';
 import { useVendorStore } from '../stores/vendorStore';
+import { VendorService } from '../services/VendorService';
 
-// Using the vendor store directly, no need for local props or state
 const vendorStore = useVendorStore();
 
 onMounted(() => {
   vendorStore.fetchVendors();
 });
+
+const confirmDelete = async (id: string) => {
+  if (confirm('Are you sure you want to delete this vendor?')) {
+    try {
+      await VendorService.deleteVendor(id);
+      await vendorStore.fetchVendors(); // refresh store data
+    } catch (error) {
+      console.error('Delete failed:', error);
+      alert('Could not delete vendor.');
+    }
+  }
+};
 </script>
 
 <style scoped>

@@ -48,12 +48,27 @@
       </div>
       
       <div class="form-actions">
-        <button type="submit" :disabled="vendorStore.loading">
-          {{ vendorStore.loading ? 'Submitting...' : 'Add Vendor' }}
-        </button>
-        <div v-if="vendorStore.error" class="error-message">{{ vendorStore.error }}</div>
-        <div v-if="success" class="success-message">Vendor added successfully!</div>
-      </div>
+  <button
+    type="submit"
+    :disabled="isSubmitting"
+    class="submit-button"
+  >
+    {{ isSubmitting ? 'Submitting...' : 'Add Vendor' }}
+  </button>
+
+  <transition name="fade">
+    <div v-if="vendorStore.vendorFormError" class="error">
+  {{ vendorStore.vendorFormError }}
+</div>
+  </transition>
+
+  <transition name="fade">
+    <div v-if="success" class="success-message">
+      Vendor added successfully!
+    </div>
+  </transition>
+</div>
+
     </form>
   </div>
 </template>
@@ -64,6 +79,7 @@ import { useVendorStore } from '../stores/vendorStore';
 import type { Vendor } from '../types/Vendor';
 
 const vendorStore = useVendorStore();
+const isSubmitting = ref(false);
 
 const form = reactive<Vendor>({
   name: '',
@@ -82,21 +98,29 @@ const resetForm = () => {
 };
 
 const submitForm = async () => {
+  if (isSubmitting.value) return;
+
+  isSubmitting.value = true;
   success.value = false;
-  
+
   try {
     await vendorStore.addVendor({ ...form });
     success.value = true;
-    
-    // Reset the form after successful submission
+
+    // Wait for form reset before allowing another submission
     setTimeout(() => {
       resetForm();
       success.value = false;
+      isSubmitting.value = false; // ✅ Move this inside the timeout
     }, 2000);
   } catch (err) {
-    // Error is already handled in the store
+    // Error already handled in store
+    isSubmitting.value = false; // ✅ Only reset if there's an error
   }
+
 };
+
+
 </script>
 
 <style scoped>

@@ -1,5 +1,5 @@
 import type { Vendor } from '../types/Vendor';
-const useNodeBackend = true; // Set to true if using Node backend, false for Java backend
+const useNodeBackend = false; // Set to true if using Node backend, false for Java backend
 
 // Use environment variables or default to localhost for development
 const API_URL_JAVA = import.meta.env.VITE_API_URL_JAVA || 'http://localhost:3001/api';
@@ -37,7 +37,9 @@ export const VendorService = {
             throw new Error('A vendor with this email already exists. Please use a different email address.');
           }
         }
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text(); // read plain text response
+        throw new Error(errorText || `HTTP error! status: ${response.status}`);
+        // throw new Error(`HTTP error! status: ${response.status}`);
       }
       
       return await response.json();

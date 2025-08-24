@@ -109,4 +109,50 @@ You're welcome to make UX improvements or add minor enhancements, as long as the
 4. Share the link to your repository with us.
 ---
 
+**DOCUMENTATION** (24-08-2025)
+## Setup Instructions
+
+1. Clone the repository:
+   a-Through VS code terminal-
+   git clone https://github.com/maersk-recruitment-tasks/01-fullstack-vendor-onboarding
+   cd vendor-onboarding-app
+   b- Install frontend dependencies- npm install
+   c- Install backend dependencies-mvn clean install
+   d- run spring-bot application- mvn spring-boot:run
+   e- ensured whether BE is running with - http://localhost:3001/api/vendors
+   f- run fron end now- npm run dev
+   g- verified if its running- http://localhost:5173/
+
+2- Tasks Approach-
+    a- **Delete vendor**
+    -Added DELETE and logic in method by passing the vendor id reference endpoint in vendorController
+    -create deleteVendor logic in FE vendorService.ts to call the delete api
+    -handled the deletion in vendorList by triggering the deletion and refreshing the list again.
+    -binded the delete action with button.
+
+    b- **Fix the UI bug**
+    -Prevented rapid clicks by disabling the "Add vendor" button while the request is in progress.
+    -in vendorStore.ts , defined loading property as false making it true once we get the value.
+
+    c- **Unique Emails**
+    -Added UNIQUE constraint in data.sql in ALTER TABLE query
+    -ceking if the email already exists from vendor repo
+    -handling exception properly by creating seperate file and checking in UI component if error is 409, already exits then throwing a messaged in UI.
+
+3-Assumptions & Trade-offs or challenges encountered during development.
+- Assumed backend returns plain text error messages (e.g. "Email already exists") instead of structured JSON.
+- Chose to keep error handling simple and readable rather than introducing a global error handler.
+- Used basic form validation and error display to keep the UI minimal and focused.
+- faced challenge in refreshing the list after deleting the vendor but it was still showing in the UI so reference handle carefully.
+- Also for unique email BE response is plain text not json format so struck there for some time due to parsing the value improperly to through the error message.
+
+4
+-What do I love most about being a software engineer- 
+Solving real-world problems with clean, scalable code.
+Obviously for continuous learning. Tech evolves fast, and being a software engineer means you're always growing — learning new frameworks, debugging new challenges, and refining your thinking. It’s a career that keeps your mind sharp and your curiosity alive.
+-What is most important to me when it comes to working in a team-
+Clear communication, Mutual respect and Shared ownership.
+-What is the worst part of being a software engineer-
+intermittent bugs, Environment-specific issues and worst is Burnout risk
+    
 We're excited to see how you approach these tasks — feel free to get creative, make reasonable trade-offs, and show us how you think as an engineer. We're particularly interested in your understanding of full-stack development and DevOps practices.
